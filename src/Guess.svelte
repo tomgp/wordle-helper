@@ -1,47 +1,76 @@
 <script>
-  import Letter from './Letter.svelte';
-  //   const modes = ['unnknown','correctletter','correctposition','exclude'];
-  export let word = '';
-  export let knownLetters = [];
-  export let knownPositions = [];
-  export let excludedLetters = [];
-  export let validResult;
+import { createEventDispatcher } from 'svelte';
+export let word ='';
 
-  let letterState = [0, 0, 0, 0, 0];
-  $: letters = word.split('')
-  $: {
-    knownLetters = [];
-    excludedLetters = [];
-    knownPositions = [];
-    validResult = true;
-    letterState.forEach((mode, i) => {
-      if(mode==0){
-        validResult = false;
-      }else if(mode==1){
-        knownLetters.push(word[i]);
-        knownLetters = knownLetters
-      }else if(mode==2){
-        knownPositions[i] = word[i];
-      }else if(mode==3){
-        excludedLetters.push(word[i]);
-        excludedLetters = excludedLetters;
-      }
-    });
-  };
+const dispatch = createEventDispatcher();
+const letterStates = ["green", "yellow", "grey"];
+$: letters = [...word];
+$: valid = false;
+let wordleResult = [{},{},{},{},{}];
+/* eg
+  [{ letter:'a', value:'yellow' },
+  { letter:'r', value:'yellow' },
+  { letter:'o', value:'yellow' },
+  { letter:'s', value:'grey' },
+  { letter:'e', value:'grey' }]
+*/
 
+
+function cycleLetterState(letter, i){
+  let states = ["grey","yellow","green"];
+  console.log('cycle', letter, i);
+  if(!wordleResult[i].letter){ 
+    wordleResult[i] = { 
+      letter,
+      value: 'grey'
+    }
+  }
+  let nextState = (states.findIndex(s=>s==wordleResult[i].value)+1)%states.length;
+  wordleResult[i].value = states[nextState]; 
+  valid = wordleResult.reduce((acc, d)=>{
+    console.log(d);
+    return d.letter != undefined && acc
+  }, true);
+}
+
+function submit(){
+  dispatch('submit', wordleResult);
+  wordleResult = [{},{},{},{},{}];
+  word = '';
+  valid = false;
+}
 
 </script>
-{#each letters as letter, i}
-<Letter bind:modeIndex={letterState[i]} letter={letter} />
-{/each}
-<div class:valid={validResult}></div>
+<p>
+  {#each letters as letter, i }
+  <div class="letter {wordleResult[i] ? wordleResult[i].value:'not'}" on:click={()=>cycleLetterState(letter, i)}>{letter}</div>
+  {/each}
+  {#if valid}
+  <button on:click={submit}>Refine suggestions</button>
+  {/if}
+</p>
 <style>
-  div{
-    width:20px;
-    height:20px;
+  .letter{
+    border:1px solid black;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width:2rem;
+    height:2rem;
+    font-size: 1.6rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
   }
-
-  .valid{
-    background: greenyellow;
+  .yellow{
+    background-color: yellow;
+  }
+  .grey{
+    background-color: grey;
+    color:white;
+  }
+  .green{
+    background-color: greenyellow;
   }
 </style>
