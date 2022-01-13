@@ -79,6 +79,7 @@
 	.input{
 		display: grid;
 		grid-template-columns: 1fr 1fr;
+		column-gap:1rem;
 	}
 
 	h2{
