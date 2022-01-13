@@ -2,13 +2,16 @@
 	import manager from './constraintManager.js';
 	import Guess from './Guess.svelte';
 	import GuessRecord from './GuessRecord.svelte';
-	const m = manager();
+	// import longList from './longWordList.js';
+
+	let m = manager();
+
 	let possibilities, untried;
 	let guessCount = 0;
 	let currentGuess = ''
 	let guessHistory = [];
 	$:{
-		guessCount = guessCount;
+		guessCount = guessCount; // use this to trigger the reactive block (is there a better way?)
 		possibilities = m.rankedList();
 		untried = m.disjunct();
 	}
@@ -23,20 +26,24 @@
 	}
 
 	function tryWord(w){
-		//console.log('w',w)
 		currentGuess = w;
 	}
 
 	</script>
+
 	<article>
-	<h1>Wordle helper v1</h1>
-	<section>
+	<h1 id="top">Wordle <span class="strike">helper</span> ruiner v1</h1>
+	<section class="input">
 		<div>
-			<p>Enter a word: <input type="text" bind:value={currentGuess} maxlength={5} /></p>
-			<p>Note the result: <Guess word={currentGuess} on:submit={submitGuess}/></p>
+			<p>
+				Guess: 
+				<input type="text" bind:value={currentGuess} maxlength={5} />
+			</p>
+			<div>
+				<Guess word={currentGuess} on:submit={submitGuess}/>
+			</div>
 		</div>
 		<div class="history">
-			<h2>History</h2>
 			{#each guessHistory as guess}
 			<GuessRecord guess={guess} />
 			{/each}
@@ -44,29 +51,44 @@
 	</section>
 	<section class="suggestions">
 		<div>
-			<h2>Try a possibility or...</h2>
+			<h2>Suggestions ({possibilities.length})</h2>
 			{#each possibilities as possibility}
-			<button on:click={()=>tryWord(possibility.word)} class="suggestion"> {possibility.word}<sub>{possibility.value}</sub> </button>
+			<a href="#top" on:click={()=>tryWord(possibility.word)} class="suggestion"> {possibility.word}<sub>{possibility.value}</sub> </a>
 			{/each}
 		</div>
 		<div>
-			<h2>... something not possible but with untried letters</h2>
+			<h2>Ruled out but not useless ({untried.length}) <a href="#ruled-out"><sup>?</sup></a></h2>
 			{#each untried as possibility}
-			<button on:click={()=>tryWord(possibility.word)} class="suggestion"> {possibility.word}<sub>{possibility.value}</sub> </button>
+			<a href="#top" on:click={()=>tryWord(possibility.word)} class="suggestion"> {possibility.word}<sub>{possibility.value}</sub> </a>
 			{/each}
 		</div>
+	</section>
+	<section id="ruled-out">
+		<h3>Not useless?</h3>
+		<p>Sometimes it's useful to play a word that's technically been ruled out in order to find out some more letters, that's what the words in this second column are for. <a class="up" href="#top">Back to the top &uarr;</a></p>
 	</section>
 	</article>
 	<footer>
     <p><a href="https://www.toffeemilkshake.co.uk">Tom Pearson</a> Jan 2022</p></footer>
 <style>
-	.suggestions{
+	section{
+		border-bottom: 1px solid black;
+	}
+
+	.suggestions, 
+	.input{
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 	}
-	li{
-		list-style: none;
+
+	h2{
+		height:3rem;
 	}
+
+	h2 sub{
+		color:red;
+	}
+
 	sub{
 		font-size: xx-small;
 		color: lightgrey;
@@ -81,5 +103,8 @@
 		color: red;
 		cursor: pointer;
 		border-bottom: 1px solid red;
+	}
+	.strike{
+		text-decoration: line-through;
 	}
 </style>

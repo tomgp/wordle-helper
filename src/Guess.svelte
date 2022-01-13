@@ -3,7 +3,7 @@ import { createEventDispatcher } from 'svelte';
 export let word ='';
 
 const dispatch = createEventDispatcher();
-const letterStates = ["green", "yellow", "grey"];
+// const letterStates = ["green", "yellow", "grey"];
 $: letters = [...word];
 $: valid = false;
 let wordleResult = [{},{},{},{},{}];
@@ -48,6 +48,14 @@ function submit(){
   {#if valid}
   <button on:click={submit}>Refine suggestions</button>
   {/if}
+  {#if letters.length > 0 }
+    <p class="instructions">Click the letters to cycle through the colours</p>
+    <ul class="key">
+      <li class="yellow swatch">Yellow: right letter, wrong place</li>
+      <li class="green swatch">Green: right letter, right place</li>
+      <li class="grey swatch">Grey: wrong letter</li>
+    </ul>
+  {/if}
 </p>
 <style>
   .letter{
@@ -62,6 +70,18 @@ function submit(){
     font-weight: bold;
     cursor: pointer;
     user-select: none;
+  }
+  .instructions{
+    margin-bottom:0.1rem;
+  }
+  .swatch{
+    list-style: none;
+    padding-left:0px;
+  }
+  .key{ 
+    margin-top: 0.1rem;
+    font-size: 0.7rem; 
+    padding-left:0px;
   }
   .yellow{
     background-color: yellow;
