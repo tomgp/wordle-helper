@@ -96,6 +96,7 @@
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		column-gap:1rem;
+		min-height: 230px;
 	}
 	@media(max-width: 700px) {
 		.suggestions, 
