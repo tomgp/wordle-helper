@@ -53,15 +53,19 @@
 	<section class="suggestions">
 		<div>
 			<h2>Suggestions ({possibilities.length})</h2>
+			<div class="possibility-list">
 			{#each possibilities as possibility}
 			<a href="#top" on:click={()=>tryWord(possibility.word)} class="suggestion"> {possibility.word}<sub>{possibility.value}</sub> </a>
 			{/each}
+			</div>
 		</div>
 		<div>
 			<h2>Ruled out but not useless ({untried.length}) <a href="#ruled-out"><sup>?</sup></a></h2>
+			<div class="possibility-list">
 			{#each untried as possibility}
 			<a href="#top" on:click={()=>tryWord(possibility.word)} class="suggestion"> {possibility.word}<sub>{possibility.value}</sub> </a>
 			{/each}
+			</div>
 		</div>
 	</section>
 	<section id="about">
@@ -104,7 +108,11 @@
 		height: 3rem;
 		margin-bottom: 2rem;
 	}
-
+	.possibility-list{
+		max-height: 50vh;
+		overflow-y: scroll;
+		overflow-x: hidden;
+	}
 	sub{
 		font-size: xx-small;
 		color: lightgrey;
