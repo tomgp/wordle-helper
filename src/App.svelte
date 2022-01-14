@@ -60,7 +60,7 @@
 			</div>
 		</div>
 		<div>
-			<h2>Ruled out but not useless ({untried.length}) <a href="#ruled-out"><sup>?</sup></a></h2>
+			<h2>Ruled out, not useless ({untried.length}) <a href="#ruled-out"><sup>?</sup></a></h2>
 			<div class="possibility-list">
 			{#each untried as possibility}
 			<a href="#top" on:click={()=>tryWord(possibility.word)} class="suggestion"> {possibility.word}<sub>{possibility.value}</sub> </a>
