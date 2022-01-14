@@ -2,9 +2,9 @@
 	import manager from './constraintManager.js';
 	import Guess from './Guess.svelte';
 	import GuessRecord from './GuessRecord.svelte';
-	// import longList from './longWordList.js';
+	import longList from './longWordList.js';
 
-	let m = manager();
+	let m = manager(longList);
 
 	let possibilities, untried;
 	let guessCount = 0;
@@ -33,6 +33,7 @@
 
 	<article>
 	<h1 id="top">Wordle <span class="strike">helper</span> ruiner v1</h1>
+	<p><a href="#about">About this page</a></p>
 	<section class="input">
 		<div>
 			<p>
@@ -63,8 +64,17 @@
 			{/each}
 		</div>
 	</section>
-	<section id="ruled-out">
-		<h3>Not useless?</h3>
+	<section id="about">
+		<h2 class="about">About this</h2>
+		<p><a class="up" href="#top">Back to the top &uarr;</a></p>
+		<p>I've enjoyed playing Wordle.  I love the way you only get a single word a day, it feels respectful of my time and encourages a thoughful approach to solving each puzzle. Also, it fosters a really nice community vibe as people try to discover the same word as one another each day.</p>
+		<p>The puzzle itself is moderartely interesting -- aside, there's a gameshow called <a href="https://www.itv.com/hub/lingo/10a0540">Lingo</a> on ITV which uses the same puzzle, with 4 letters instead of 5, and adds time pressure and direct competition which changes the dynamic and feel of the puzzle in interesting ways, instructive</p>
+		<p>Anyway, I got interested in what the best strategy for solving Wordle puzzles might be (better to get as many letters as possible even if ytou'r choosing words you know aren't possible or better to take the <a href="https://i.etsystatic.com/9295891/r/il/12309a/1268275533/il_fullxfull.1268275533_hd9h.jpg">Mastermind</a> gradual deduction approach) and what does the possibility space look like, how fast do your options narrow etc. I guess I'm more interested in understanding the puzzle than solving specific instances of it (c.f. sudoku).</p>
+		<h3>Colophon</h3>
+		<p>Initially I made a Javascript module that progressivley added constraints to filter a list of words and just played around with it on the command line. Once I was reasnoably satisfied that it worked I built a rudimentary UI for it in <a href="https://www.svelte.dev">Svelte</a>. The constraint solving bit and the UI don't fit together too nicely.</p>
+		<p>I think my approach is OK though I'm sure someone smarter could do better, there are a few sources of information the system doesn't take into account when ranking the value of a given guess.</p>
+		<p><a href="https://github.com/tomgp/wordle-helper">You can laugh at the code on GitHub</a></p>
+		<h3 id="ruled-out">What's the "Not useless" column about?</h3>
 		<p>Sometimes it's useful to play a word that's technically been ruled out in order to find out some more letters, that's what the words in this second column are for. <a class="up" href="#top">Back to the top &uarr;</a></p>
 	</section>
 	</article>
@@ -81,13 +91,16 @@
 		grid-template-columns: 1fr 1fr;
 		column-gap:1rem;
 	}
-
-	h2{
-		height:3rem;
+	@media(max-width: 700px) {
+		.suggestions, 
+		.input{
+			grid-template-columns: 1fr;
+		}
 	}
 
-	h2 sub{
-		color:red;
+	.suggestions h2{
+		height: 3rem;
+		margin-bottom: 2rem;
 	}
 
 	sub{
