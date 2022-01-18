@@ -43,7 +43,7 @@ function submit(){
 </script>
 <p>
   {#each letters as letter, i }
-  <div class="letter {wordleResult[i] ? wordleResult[i].value:'not'}" on:click={()=>cycleLetterState(letter, i)}>{letter}</div>
+  <div class="letter {wordleResult[i] ? wordleResult[i].value:'not'}" on:click={()=>cycleLetterState(String(letter).toLocaleLowerCase(), i)}>{letter}</div>
   {/each}
   {#if valid}
   <button on:click={submit}>Refine suggestions</button>
