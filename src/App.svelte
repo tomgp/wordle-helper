@@ -69,8 +69,10 @@
 		</div>
 	</section>
 	<section id="about">
-		<h2 class="about">About this</h2>
+		<h2 class="about">A short video explaining how to use this thing</h2>
+		<iframe height="315" src="https://www.youtube.com/embed/Naz-4mn3ubA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 		<p><a class="up" href="#top">Back to the top &uarr;</a></p>
+		<h2 class="about">Background</h2>
 		<p>I've enjoyed playing <a href="https://www.powerlanguage.co.uk/wordle/">Wordle</a>.  I love the way you only get a single word a day, it feels respectful of my time and encourages a thoughful approach to solving each puzzle. Also, it fosters a really nice community vibe as people try to discover the same word as one another each day. It's telling that all the inevitable knockoffs seem to ditch the one puzzle a day rule, the best most interesting part of the whole thing.</p>
 		<p>The puzzle itself is moderartely interesting. There's a gameshow called <a href="https://www.itv.com/hub/lingo/10a0540">Lingo</a> on ITV which uses the same idea but with 4 letters instead of 5, and adds time pressure and direct competition which changes the dynamic and feel of the puzzle in interesting ways.</p>
 		<p>Anyway, I got interested in what the best strategy for solving Wordle puzzles might be e.g. is it better to get as many letters as possible even if you're choosing words you know aren't possible, or is it better to take the <a href="https://i.etsystatic.com/9295891/r/il/12309a/1268275533/il_fullxfull.1268275533_hd9h.jpg">Mastermind</a>-like gradual deduction approach. And what does the possibility space look like? How fast do your options narrow? etc. I guess I'm more interested in understanding the puzzle than solving specific instances of it (c.f. sudoku). Hence this page.</p>
@@ -91,6 +93,10 @@
 		border-bottom: 1px solid black;
 	}
 
+	iframe{
+		width:80%;
+		height:315;
+	}
 	.suggestions, 
 	.input{
 		display: grid;
